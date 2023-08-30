@@ -1,0 +1,81 @@
+Sharding setup (Localhost):
+   config server:
+       mongod --configsvr --port 28041 --bind_ip localhost --replSet config_repl --dbpath D:\Gedion\mongo-tut\shard-practice\configsrv
+	   mongod --configsvr --port 28042 --bind_ip localhost --replSet config_repl --dbpath D:\Gedion\mongo-tut\shard-practice\configsrv1
+	   mongod --configsvr --port 28043 --bind_ip localhost --replSet config_repl --dbpath D:\Gedion\mongo-tut\shard-practice\configsrv2
+	   mongosh --host localhost --port 28041
+	   
+	   rsconf = {
+	              _id:"config_repl",
+				  members: [
+				  {
+				   _id: 0,
+				   host: "localhost:28041"
+				   },
+				   {
+				   _id: 1,
+				   host: "localhost:28042"
+				   },
+				   {
+				   _id: 2,
+				   host: "localhost:28043"
+				   }
+				   ]   
+	          }
+			  
+	   rs.initiate(rsconf)
+	   rs.status()
+	   
+   shard server:
+       mongod --shardsvr --port 28081 --bind_ip localhost --replSet shard_repl --dbpath D:\Gedion\mongo-tut\shard-practice\shardrep1
+	   mongod --shardsvr --port 28082 --bind_ip localhost --replSet shard_repl --dbpath D:\Gedion\mongo-tut\shard-practice\shardrep2
+	   mongod --shardsvr --port 28083 --bind_ip localhost --replSet shard_repl --dbpath D:\Gedion\mongo-tut\shard-practice\shardrep3
+	   mongosh --host localhost --port 28081
+	   
+	   rsconf = {
+	              _id:"shard_repl",
+				  members: [
+				  {
+				   _id: 0,
+				   host: "localhost:28081"
+				   },
+				   {
+				   _id: 1,
+				   host: "localhost:28082"
+				   },
+				   {
+				   _id: 2,
+				   host: "localhost:28083"
+				   }
+				   ]   
+	          }
+			  
+	   rs.initiate(rsconf)
+	   rs.status()
+	   
+   shard2 server:
+       mongod --shardsvr --port 29081 --bind_ip localhost --replSet shard2_repl --dbpath D:\Gedion\mongo-tut\shard-practice\shard2rep1
+	   mongod --shardsvr --port 29082 --bind_ip localhost --replSet shard2_repl --dbpath D:\Gedion\mongo-tut\shard-practice\shard2rep2
+	   mongod --shardsvr --port 29083 --bind_ip localhost --replSet shard2_repl --dbpath D:\Gedion\mongo-tut\shard-practice\shard2rep3
+	   mongosh --host localhost --port 29081
+	   
+	   rsconf = {
+	              _id:"shard2_repl",
+				  members: [
+				  {
+				   _id: 0,
+				   host: "localhost:29081"
+				   },
+				   {
+				   _id: 1,
+				   host: "localhost:29082"
+				   },
+				   {
+				   _id: 2,
+				   host: "localhost:29083"
+				   }
+				   ]   
+	          }
+			  
+	   rs.initiate(rsconf)
+	   rs.status()
